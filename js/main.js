@@ -1,18 +1,16 @@
 const generate = document.getElementById('generate');
 
-let square;
-
 generate.addEventListener(
     "click",
     function(){
         
         const grid = document.getElementById('grid');
         
-        grid.innerHTML="";
-
-        const difficulty = document.getElementById("select").value;
-
         let quantity;
+        
+        grid.innerHTML="";
+        
+        const difficulty = document.getElementById("select").value;
 
         if (difficulty == 1) {
 
@@ -25,6 +23,8 @@ generate.addEventListener(
             quantity = 40;
         }
 
+        let square;
+
         for(let i = 0; i < quantity; i++) {
             
             grid.append(generatesquare(square, i, quantity));
@@ -32,7 +32,7 @@ generate.addEventListener(
     }
 )
 
-function generatesquare (square, number, quantity) {
+function generatesquare (square, i, quantity) {
     
     square = document.createElement("div");
             
@@ -47,14 +47,41 @@ function generatesquare (square, number, quantity) {
         square.classList.add("square-big")
     }
             
-    square.innerHTML = number + 1;
+    square.innerHTML = i + 1;
 
     square.addEventListener(
         "click",
         function(){
             
-            this.classList.toggle("active");
+            if (includes (quantity, i)) {
+
+                this.classList.add("bomb");
+            }else{
+
+                this.classList.toggle("active");
+            }
         } 
     )
+    
     return square;
+}
+
+function includes (quantity, number) {
+
+    const bombearray = [];
+        
+    while (bombearray.length < 16) {
+            
+        const randomnumber = Math.floor(Math.random() * quantity) + 1;
+            
+        if(!bombearray.includes(randomnumber)) {
+                
+            bombearray.push(randomnumber);
+        }
+    }
+
+    if (bombearray.includes(number)) {
+        
+        return true;
+    }
 }
